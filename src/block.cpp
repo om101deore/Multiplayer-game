@@ -1,8 +1,14 @@
 #include "block.h"
 #include "shader.h"
+#include <glm/fwd.hpp>
 
 Block::Block()
 {
+    // inits
+    offset = 0.0f;
+    model  = glm::mat4(1.0f);
+
+    // ogl stuff
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glBindVertexArray(VAO);
@@ -20,9 +26,12 @@ Block::~Block()
     glDeleteBuffers(1, &VBO);
 }
 
-
-void Block::draw(Shader &shader){
+void Block::draw(Shader& shader)
+{
     glBindVertexArray(VAO);
+
+    shader.setVec3("col", color);
     shader.useShader();
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
